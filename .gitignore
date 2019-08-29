@@ -7,3 +7,11 @@ target
 # Test output
 src/out/*.actual.scala
 src/out/*.actual.csv
+src/out/*.actual.c
+src/out/*.actual.js
+src/out/*.actual.wat
+
+# Binaries
+*.wasm
+*.out
+*.class

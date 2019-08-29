@@ -2,17 +2,24 @@
 set -e
 
 ./bench query_t1gram2.check.c ../data/1gram_a.csv
-./bench query_t1gram2n.check.c ../data/1gram_a.csv
-./bench query_t1gram2h.check.c ../data/1gram_a.csv
+./bench query_t1gram2.check.js ../data/1gram_a.csv
 ./bench query_t1gram2.hand.c ../data/1gram_a.csv
 ./bench query_t1gram2.hand2.c ../data/1gram_a.csv
 
-./bench query_t1gram2.check.scala ../data/1gram_a.csv 
+./bench query_t1gram2n.check.c ../data/1gram_a.csv
+./bench query_t1gram2n.check.js ../data/1gram_a.csv
+
+./bench query_t1gram2h.check.c ../data/1gram_a.csv
+./bench query_t1gram2h.check.js ../data/1gram_a.csv
+
+./bench query_t1gram2.check.scala ../data/1gram_a.csv
 ./bench query_t1gram2.hand0.scala ../data/1gram_a.csv
 ./bench query_t1gram2.hand.scala ../data/1gram_a.csv
 
 ./bench query_t1gram4.check.c ../data/1gram_a.csv
+./bench query_t1gram4.check.js ../data/1gram_a.csv
 ./bench query_t1gram4.check.scala ../data/1gram_a.csv
 
 ./bench query_t1gram4h.check.c ../data/1gram_a.csv
+./bench query_t1gram4h.check.js ../data/1gram_a.csv
 ./bench query_t1gram4h.check.scala ../data/1gram_a.csv

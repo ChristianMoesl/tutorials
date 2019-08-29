@@ -114,7 +114,7 @@ even if multiple processes are launched (this is how MPI works).
       }
     }
     val expected = str.groupBy(c => c).map { case (c,cs) => s"'$c' ${cs.length}" }.toSet
-    val actual = lms.core.utils.captureOut(snippet.eval("ARG")).lines.toSet
+    val actual = lms.core.utils.captureOut(snippet.eval("ARG")).lines.toArray.toSet
     assert { actual == expected }
     check("charcount_seq", snippet.code, "c")
   }
@@ -228,7 +228,7 @@ that the result is partioned by keys.
       }
     }
     val expected = snippet.str.groupBy(c => c).map { case (c,cs) => s": '$c' ${cs.length}" }.toSet
-    val actual = lms.core.utils.captureOut(snippet.eval("ARG")).lines.map(s => s.substring(s.indexOf(':'))).toSet // drop pid, since we don't know many here
+    val actual = lms.core.utils.captureOut(snippet.eval("ARG")).lines.map(s => s.substring(s.indexOf(':'))).toArray.toSet // drop pid, since we don't know many here
     assert { actual == expected }
     check("charcount_par", snippet.code, "c")
   }

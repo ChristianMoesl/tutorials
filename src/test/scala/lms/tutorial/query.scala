@@ -66,6 +66,7 @@ import lms.core.virtualize
 import org.scalatest.FunSuite
 
 import lms.core.utils
+import lms.wasm._
 
 /**
 Relational Algebra AST
@@ -350,10 +351,21 @@ object Run {
       override def eval: Unit = eval(filename)
     }
 
+  def wasm_engine =
+    new DslDriverWasm[String,Unit] with WasmScannerExp
+      with StagedEngine with MainEngine with query_optwasm.QueryCompiler { q =>
+      override val codegen = new DslGenWasm with WasmGenScanner {
+        val IR: q.type = q
+      }
+      override def snippet(fn: Rep[String]): Rep[Unit] = run
+      override def prepare: Unit = {}
+      override def eval: Unit = eval(filename)
+    }
+
   def main(args: Array[String]) {
     if (args.length < 2) {
       println("syntax:")
-      println("   test:run (unstaged|scala|c) sql [file]")
+      println("   test:run (unstaged|scala|c|wasm) sql [file]")
       println()
       println("example usage:")
       println("   test:run c \"select * from src/data/t1gram.csv schema Phrase, Year, MatchCount, VolumeCount delim \\t where Phrase='Auswanderung'\"")
@@ -362,6 +374,7 @@ object Run {
     val version = args(0)
     val engine = version match {
       case "c" => c_engine
+      case "wasm" => wasm_engine
       case "scala" => scala_engine
       case "unstaged" => unstaged_engine
       case _ => println("warning: unexpected engine, using 'unstaged' by default")
@@ -436,7 +449,7 @@ class QueryTest extends TutorialFunSuite {
           assert(expectedParsedQuery==parsedQuery)
         }
         check(name, code)
-        precompile
+       precompile
         checkOut(name, "csv", eval(defaultEvalTable))
       }
     }
@@ -458,14 +471,35 @@ class QueryTest extends TutorialFunSuite {
     }
   }
 
+  abstract class WasmStagedQueryDriver(val name: String, val query: String) extends DslDriverWasm[String,Unit] with StagedTestDriver with StagedQueryProcessor with WasmScannerExp { q =>
+    override val codegen = new DslGenWasm with WasmGenScanner {
+      val IR: q.type = q
+    }
+    override def runtest: Unit = {
+      test(version+" "+name) {
+        for (expectedParsedQuery <- expectedAstForTest.get(name)) {
+          assert(expectedParsedQuery==parsedQuery)
+        }
+        check(name, jsCode, "js")
+        check(name, watCode, "wat")
+        // precompile
+        checkOut(name, "csv", eval(defaultEvalTable))
+      }
+    }
+  }
+
   def testquery(name: String, query: String = "") {
     val drivers: List[TestDriver] = List(
-      new ScalaPlainQueryDriver(name, query) with query_unstaged.QueryInterpreter,
-      new ScalaStagedQueryDriver(name, query) with query_staged0.QueryCompiler,
-      new ScalaStagedQueryDriver(name, query) with query_staged.QueryCompiler,
+     new ScalaPlainQueryDriver(name, query) with query_unstaged.QueryInterpreter,
+     new ScalaStagedQueryDriver(name, query) with query_staged0.QueryCompiler,
+     new ScalaStagedQueryDriver(name, query) with query_staged.QueryCompiler,
       new CStagedQueryDriver(name, query) with query_optc.QueryCompiler {
        // FIXME: hack so i don't need to replace Value -> #Value in all the files right now
        override def isNumericCol(s: String) = s == "Value" || super.isNumericCol(s)
+      },
+      new WasmStagedQueryDriver(name, query) with query_optwasm.QueryCompiler {
+        // FIXME: hack so i don't need to replace Value -> #Value in all the files right now
+         override def isNumericCol(s: String) = s == "Value" || super.isNumericCol(s)
       }
     )
     drivers.foreach(_.runtest)

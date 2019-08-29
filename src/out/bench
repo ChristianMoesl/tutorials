@@ -54,6 +54,11 @@ if [ "$ext" == "c" ]; then
     cmd="./src/out/a.out src/data/$data"
 fi
 
+if [ "$ext" == "js" ]; then
+    echo "webassembly" >>$benchlog
+    cmd="node --max-old-space-size=8192 src/out/$fn src/data/$data"
+fi
+
 if [ -z "$cmd" ]; then
     echo "unknown program extension '$ext', expected 'scala' or 'c'"
     exit

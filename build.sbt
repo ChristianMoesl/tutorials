@@ -23,7 +23,10 @@ addCompilerPlugin("org.scalamacros" % "paradise" % paradiseVersion cross CrossVe
 // tests are not thread safe
 parallelExecution in Test := false
 
-lazy val tutorials = (project in file(".")).dependsOn(lms % "test->test")
+lazy val tutorials = (project in file(".")).dependsOn(lms % "test->test", lmsWasm % "test->test")
+  // .settings(fork := true)
+
+lazy val lmsWasm = ProjectRef(file("../lms-wasm"), "lms-wasm")
   // .settings(fork := true)
 
 lazy val lms = ProjectRef(file("../lms-clean"), "lms-clean")

@@ -35,9 +35,9 @@ trait TutorialFunSuite extends LibSuite with EmbeddedControls {
     out.write(content)
     out.close()
   }
-  def writeFileIndented(name: String, content: String) {
+  def writeFileIndented(name: String, content: String, suffix: String) {
     val out = new java.io.PrintWriter(new File(name))
-    printIndented(content)(out)
+    printIndented(content, suffix)(out)
     out.close()
   }
   def checkOut(label: String, suffix: String, thunk: => Unit) = {
@@ -49,11 +49,15 @@ trait TutorialFunSuite extends LibSuite with EmbeddedControls {
     val name = fileprefix+".check."+suffix
     val aname = fileprefix+".actual."+suffix
     val expected = readFile(name)
-    val code = indent(raw_code)
+    val code = indent(raw_code, suffix)
     if (expected != code) {
       val wname = if (overwriteCheckFiles) name else aname
       println("writing " + wname)
       writeFile(wname, code)
+      if (suffix == "wat") {
+        import scala.sys.process._
+        Seq("wat2wasm", wname, "-o", wname.replace(".wat", ".wasm")).!!
+      }
     } else {
       val f = new File(aname)
       if (f.exists) f.delete
@@ -64,12 +68,15 @@ trait TutorialFunSuite extends LibSuite with EmbeddedControls {
         assert(expected == code, name)
     }
   }
-  def indent(str: String) = {
+  def indent(str: String, suffix: String): String = {
+    if (suffix == ".csv" && suffix == ".js")
+      return str
+
     val s = new StringWriter
-    printIndented(str)(new PrintWriter(s))
+    printIndented(str, suffix)(new PrintWriter(s))
     s.toString
   }
-  def printIndented(str: String)(out: PrintWriter): Unit = {
+  def printIndented(str: String, suffix: String)(out: PrintWriter): Unit = {
     val lines = str.split("[\n\r]")
     var indent = 0
     for (l0 <- lines) {
@@ -79,15 +86,29 @@ trait TutorialFunSuite extends LibSuite with EmbeddedControls {
         var close = 0
         var initClose = 0
         var nonWsChar = false
+        if (suffix == ".wat") {
+          l.trim match {
+            case s if s startsWith "br_if" =>
+            case s if s startsWith "if" => open += 1
+            case s if s startsWith "block" => open += 1
+            case s if s startsWith "loop" => open += 1
+            case s if s startsWith "then" => close += 1
+            case s if s startsWith "else" => open += 1; close += 1
+            case s if s startsWith "end" => close += 1
+            case _ =>
+          }
+        }
         l foreach {
-          case '{' => {
+          case '(' if suffix == ".wat" => open += 1
+          case ')' if suffix == ".wat" => close += 1
+          case '{' if suffix != ".wat"  => {
             open += 1
             if (!nonWsChar) {
               nonWsChar = true
               initClose = close
             }
           }
-          case '}' => close += 1
+          case '}' if suffix != ".wat"  => close += 1
           case x => if (!nonWsChar && !x.isWhitespace) {
             nonWsChar = true
             initClose = close
@@ -104,7 +125,7 @@ trait TutorialFunSuite extends LibSuite with EmbeddedControls {
   def exec(label: String, code: String, suffix: String = "scala") = {
     val fileprefix = prefix+under+label
     val aname = fileprefix+".actual."+suffix
-    writeFileIndented(aname, code)
+    writeFileIndented(aname, code, suffix)
   }
 }
 
