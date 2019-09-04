@@ -310,10 +310,12 @@ object query_optwasm {
       def update(i: Rep[Int], x: Fields) = (buf,x).zipped.foreach {
         case (IntColBuffer(b), RInt(x)) => b(i) = x
         case (StringColBuffer(b,l), RString(x, y)) => b(i) = x; l(i) = y
+        case _ => ???
       }
       def apply(i: Rep[Int]) = buf.map {
         case IntColBuffer(b) => RInt(b(i))
         case StringColBuffer(b,l) => RString(b(i),l(i))
+        case _ => ???
       }
     }
   }

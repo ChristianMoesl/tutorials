@@ -1,11 +1,11 @@
 (module
 ;; *********** Import Section ***********
-(import "env" "printlnString" (func $printlnString (param i32)))
+(import "env" "println1" (func $println1 (param i32)))
 (import "env" "malloc" (func $malloc (param i32) (result i32)))
 (import "env" "readFile" (func $readFile (param i32) (result i32)))
 (import "env" "printData" (func $printData (param i32 i32)))
-(import "env" "printString" (func $printString (param i32)))
-(import "env" "printInt" (func $printInt (param i32)))
+(import "env" "printf0" (func $printf0 (param i32)))
+(import "env" "printf1" (func $printf1 (param i32 i32)))
 ;; *********** Memory Section ***********
 (memory (export "mem") 1)
 ;; *********** Code Section ***********
@@ -108,8 +108,11 @@ local.get $t1
 (local $x43 i32)
 (local $x44 i32)
 (local $x45 i32)
-i32.const 20
-call $printlnString
+i32.const 3
+i32.const 0
+i32.const 32
+i32.store8
+call $println1
 i32.const 0
 local.set $x1
 i32.const 256
@@ -128,13 +131,13 @@ i32.add
 local.set $x2
 i32.const 0
 local.set $x3
-block $2
-loop $3
+block $0
+loop $1
 local.get $x3
 i32.const 256
 i32.ne
 i32.eqz
-br_if $2
+br_if $0
 local.get $x2
 local.get $x3
 i32.const 4
@@ -146,7 +149,7 @@ local.get $x3
 i32.const 1
 i32.add
 local.set $x3
-br $3
+br $1
 end
 end
 i32.const 65536
@@ -221,13 +224,13 @@ local.get $t11
 i32.const 4
 i32.add
 local.set $x9
-i32.const 70
+i32.const 88
 call $readFile
 local.set $x10
 i32.const 0
 local.set $x11
-block $4
-loop $5
+block $0
+loop $1
 local.get $x10
 local.get $x11
 i32.add
@@ -235,20 +238,20 @@ i32.load8_u
 i32.const 44
 i32.ne
 i32.eqz
-br_if $4
+br_if $0
 local.get $x11
 i32.const 1
 i32.add
 local.set $x11
-br $5
+br $1
 end
 end
 local.get $x11
 i32.const 1
 i32.add
 local.set $x11
-block $6
-loop $7
+block $0
+loop $1
 local.get $x10
 local.get $x11
 i32.add
@@ -256,12 +259,12 @@ i32.load8_u
 i32.const 10
 i32.ne
 i32.eqz
-br_if $6
+br_if $0
 local.get $x11
 i32.const 1
 i32.add
 local.set $x11
-br $7
+br $1
 end
 end
 local.get $x11
@@ -273,17 +276,17 @@ i32.const 4
 i32.sub
 i32.load
 local.set $x12
-block $8
-loop $9
+block $0
+loop $1
 local.get $x11
 local.get $x12
 i32.lt_s
 i32.eqz
-br_if $8
+br_if $0
 local.get $x11
 local.set $x13
-block $10
-loop $11
+block $2
+loop $3
 local.get $x10
 local.get $x11
 i32.add
@@ -291,12 +294,12 @@ i32.load8_u
 i32.const 44
 i32.ne
 i32.eqz
-br_if $10
+br_if $2
 local.get $x11
 i32.const 1
 i32.add
 local.set $x11
-br $11
+br $3
 end
 end
 local.get $x11
@@ -307,8 +310,8 @@ i32.add
 local.set $x11
 i32.const 0
 local.set $x15
-block $12
-loop $13
+block $2
+loop $3
 local.get $x10
 local.get $x11
 i32.add
@@ -316,7 +319,7 @@ i32.load8_u
 i32.const 10
 i32.ne
 i32.eqz
-br_if $12
+br_if $2
 local.get $x15
 i32.const 10
 i32.mul
@@ -332,7 +335,7 @@ local.get $x11
 i32.const 1
 i32.add
 local.set $x11
-br $13
+br $3
 end
 end
 local.get $x11
@@ -346,11 +349,9 @@ local.get $x16
 i32.const 4
 i32.mul
 i32.add
-;; unchecked: x83 = (unchecked[ ][ ](i32.add) x25 x68)
 local.get $x10
 local.get $x13
 i32.add
-;; unchecked end: x83 = (unchecked[ ][ ](i32.add) x25 x68)
 i32.store
 local.get $x5
 local.get $x16
@@ -376,18 +377,18 @@ local.set $x7
 ;; generated code for hash lookup
 i32.const 0
 local.set $x18
-block $14
-loop $15
+block $2
+loop $3
 i32.const 0
 i32.eqz
-br_if $14
+br_if $2
 local.get $x18
 i32.const 1
 i32.add
 i32.const 255
 i32.and
 local.set $x18
-br $15
+br $3
 end
 end
 local.get $x2
@@ -457,10 +458,10 @@ local.get $x20
 i32.const 1
 i32.add
 i32.store
-br $9
+br $1
 end
 end
-i32.const 93
+i32.const 112
 call $readFile
 local.set $x21
 i32.const 0
@@ -470,17 +471,17 @@ i32.const 4
 i32.sub
 i32.load
 local.set $x23
-block $16
-loop $17
+block $0
+loop $1
 local.get $x22
 local.get $x23
 i32.lt_s
 i32.eqz
-br_if $16
+br_if $0
 local.get $x22
 local.set $x24
-block $18
-loop $19
+block $2
+loop $3
 local.get $x21
 local.get $x22
 i32.add
@@ -488,12 +489,12 @@ i32.load8_u
 i32.const 9
 i32.ne
 i32.eqz
-br_if $18
+br_if $2
 local.get $x22
 i32.const 1
 i32.add
 local.set $x22
-br $19
+br $3
 end
 end
 local.get $x22
@@ -504,8 +505,8 @@ i32.add
 local.set $x26
 local.get $x26
 local.set $x22
-block $20
-loop $21
+block $2
+loop $3
 local.get $x21
 local.get $x22
 i32.add
@@ -513,12 +514,12 @@ i32.load8_u
 i32.const 9
 i32.ne
 i32.eqz
-br_if $20
+br_if $2
 local.get $x22
 i32.const 1
 i32.add
 local.set $x22
-br $21
+br $3
 end
 end
 local.get $x22
@@ -529,8 +530,8 @@ i32.add
 local.set $x28
 local.get $x28
 local.set $x22
-block $22
-loop $23
+block $2
+loop $3
 local.get $x21
 local.get $x22
 i32.add
@@ -538,12 +539,12 @@ i32.load8_u
 i32.const 9
 i32.ne
 i32.eqz
-br_if $22
+br_if $2
 local.get $x22
 i32.const 1
 i32.add
 local.set $x22
-br $23
+br $3
 end
 end
 local.get $x22
@@ -554,8 +555,8 @@ i32.add
 local.set $x30
 local.get $x30
 local.set $x22
-block $24
-loop $25
+block $2
+loop $3
 local.get $x21
 local.get $x22
 i32.add
@@ -563,12 +564,12 @@ i32.load8_u
 i32.const 10
 i32.ne
 i32.eqz
-br_if $24
+br_if $2
 local.get $x22
 i32.const 1
 i32.add
 local.set $x22
-br $25
+br $3
 end
 end
 local.get $x22
@@ -581,18 +582,18 @@ local.set $x22
 ;; generated code for hash lookup
 i32.const 0
 local.set $x33
-block $26
-loop $27
+block $2
+loop $3
 i32.const 0
 i32.eqz
-br_if $26
+br_if $2
 local.get $x33
 i32.const 1
 i32.add
 i32.const 255
 i32.and
 local.set $x33
-br $27
+br $3
 end
 end
 local.get $x2
@@ -611,41 +612,33 @@ local.get $x25
 local.get $x24
 i32.sub
 local.set $x34
-;; unchecked: x174 = (unchecked[ ][ ](i32.add) x152 x159)
 local.get $x21
 local.get $x24
 i32.add
-;; unchecked end: x174 = (unchecked[ ][ ](i32.add) x152 x159)
 local.set $x35
 local.get $x27
 local.get $x26
 i32.sub
 local.set $x36
-;; unchecked: x189 = (unchecked[ ][ ](i32.add) x152 x172)
 local.get $x21
 local.get $x26
 i32.add
-;; unchecked end: x189 = (unchecked[ ][ ](i32.add) x152 x172)
 local.set $x37
 local.get $x29
 local.get $x28
 i32.sub
 local.set $x38
-;; unchecked: x204 = (unchecked[ ][ ](i32.add) x152 x187)
 local.get $x21
 local.get $x28
 i32.add
-;; unchecked end: x204 = (unchecked[ ][ ](i32.add) x152 x187)
 local.set $x39
 local.get $x31
 local.get $x30
 i32.sub
 local.set $x40
-;; unchecked: x219 = (unchecked[ ][ ](i32.add) x152 x202)
 local.get $x21
 local.get $x30
 i32.add
-;; unchecked end: x219 = (unchecked[ ][ ](i32.add) x152 x202)
 local.set $x41
 local.get $x32
 i32.const 256
@@ -662,13 +655,13 @@ i32.add
 local.set $x43
 local.get $x42
 local.set $x44
-block $28
-loop $29
+block $2
+loop $3
 local.get $x44
 local.get $x43
 i32.ne
 i32.eqz
-br_if $28
+br_if $2
 local.get $x8
 local.get $x44
 i32.const 4
@@ -689,54 +682,63 @@ i32.mul
 i32.add
 i32.load
 call $printData
-i32.const 117
-call $printString
+i32.const 136
+call $printf0
+i32.const 144
+i32.const 4
+i32.const 0
 local.get $x6
 local.get $x45
 i32.const 4
 i32.mul
 i32.add
 i32.load
-call $printInt
-i32.const 117
-call $printString
+i32.store
+call $printf1
+i32.const 136
+call $printf0
 local.get $x35
 local.get $x34
 call $printData
-i32.const 117
-call $printString
+i32.const 136
+call $printf0
 local.get $x37
 local.get $x36
 call $printData
-i32.const 117
-call $printString
+i32.const 136
+call $printf0
 local.get $x39
 local.get $x38
 call $printData
-i32.const 117
-call $printString
+i32.const 136
+call $printf0
 local.get $x41
 local.get $x40
 call $printData
-i32.const 123
-call $printlnString
+i32.const 3
+i32.const 0
+i32.const 152
+i32.store8
+call $println1
 local.get $x44
 i32.const 1
 i32.add
 local.set $x44
-br $29
+br $3
 end
 end
+else
 end
-br $17
+br $1
 end
 end
 )
 ;; *********** Data Section ***********
-(data (i32.const 0) "\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00")
-(data (i32.const 20) "Word,Value,Phrase,Year,MatchCount,VolumeCount\00")
-(data (i32.const 70) "src/data/words.csv\00")
-(data (i32.const 93) "src/data/t1gram.csv\00")
-(data (i32.const 117) ",\00")
-(data (i32.const 123) "\00")
+(data (i32.const 0) "\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00")
+(data (i32.const 32) "Word,Value,Phrase,Year,MatchCount,VolumeCount\00")
+(data (i32.const 88) "src/data/words.csv\00")
+(data (i32.const 112) "src/data/t1gram.csv\00")
+(data (i32.const 136) ",\00")
+(data (i32.const 144) "%d\00")
+(data (i32.const 152) "\00")
 )

@@ -449,7 +449,7 @@ class QueryTest extends TutorialFunSuite {
           assert(expectedParsedQuery==parsedQuery)
         }
         check(name, code)
-       precompile
+        precompile
         checkOut(name, "csv", eval(defaultEvalTable))
       }
     }
@@ -465,7 +465,7 @@ class QueryTest extends TutorialFunSuite {
           assert(expectedParsedQuery==parsedQuery)
         }
         check(name, code, "c")
-        // precompile
+
         checkOut(name, "csv", eval(defaultEvalTable))
       }
     }
@@ -482,7 +482,6 @@ class QueryTest extends TutorialFunSuite {
         }
         check(name, jsCode, "js")
         check(name, watCode, "wat")
-        // precompile
         checkOut(name, "csv", eval(defaultEvalTable))
       }
     }

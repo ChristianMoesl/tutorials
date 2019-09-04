@@ -1,10 +1,10 @@
 (module
 ;; *********** Import Section ***********
-(import "env" "printlnString" (func $printlnString (param i32)))
+(import "env" "println1" (func $println1 (param i32)))
 (import "env" "readFile" (func $readFile (param i32) (result i32)))
 (import "env" "printData" (func $printData (param i32 i32)))
-(import "env" "printString" (func $printString (param i32)))
-(import "env" "printInt" (func $printInt (param i32)))
+(import "env" "printf0" (func $printf0 (param i32)))
+(import "env" "printf1" (func $printf1 (param i32 i32)))
 ;; *********** Memory Section ***********
 (memory (export "mem") 1)
 ;; *********** Code Section ***********
@@ -58,13 +58,93 @@ local.get $t1
 (local $x6 i32)
 (local $x7 i32)
 (local $x8 i32)
-i32.const 20
-call $printlnString
-i32.const 40
+i32.const 3
+i32.const 0
+i32.const 32
+i32.store8
+call $println1
+i32.const 56
 call $readFile
 local.set $x1
 i32.const 0
 local.set $x2
+block $0
+loop $1
+local.get $x1
+local.get $x2
+i32.add
+i32.load8_u
+i32.const 44
+i32.ne
+i32.eqz
+br_if $0
+local.get $x2
+i32.const 1
+i32.add
+local.set $x2
+br $1
+end
+end
+local.get $x2
+i32.const 1
+i32.add
+local.set $x2
+block $0
+loop $1
+local.get $x1
+local.get $x2
+i32.add
+i32.load8_u
+i32.const 44
+i32.ne
+i32.eqz
+br_if $0
+local.get $x2
+i32.const 1
+i32.add
+local.set $x2
+br $1
+end
+end
+local.get $x2
+i32.const 1
+i32.add
+local.set $x2
+block $0
+loop $1
+local.get $x1
+local.get $x2
+i32.add
+i32.load8_u
+i32.const 10
+i32.ne
+i32.eqz
+br_if $0
+local.get $x2
+i32.const 1
+i32.add
+local.set $x2
+br $1
+end
+end
+local.get $x2
+i32.const 1
+i32.add
+local.set $x2
+local.get $x1
+i32.const 4
+i32.sub
+i32.load
+local.set $x3
+block $0
+loop $1
+local.get $x2
+local.get $x3
+i32.lt_s
+i32.eqz
+br_if $0
+local.get $x2
+local.set $x4
 block $2
 loop $3
 local.get $x1
@@ -83,83 +163,6 @@ br $3
 end
 end
 local.get $x2
-i32.const 1
-i32.add
-local.set $x2
-block $4
-loop $5
-local.get $x1
-local.get $x2
-i32.add
-i32.load8_u
-i32.const 44
-i32.ne
-i32.eqz
-br_if $4
-local.get $x2
-i32.const 1
-i32.add
-local.set $x2
-br $5
-end
-end
-local.get $x2
-i32.const 1
-i32.add
-local.set $x2
-block $6
-loop $7
-local.get $x1
-local.get $x2
-i32.add
-i32.load8_u
-i32.const 10
-i32.ne
-i32.eqz
-br_if $6
-local.get $x2
-i32.const 1
-i32.add
-local.set $x2
-br $7
-end
-end
-local.get $x2
-i32.const 1
-i32.add
-local.set $x2
-local.get $x1
-i32.const 4
-i32.sub
-i32.load
-local.set $x3
-block $8
-loop $9
-local.get $x2
-local.get $x3
-i32.lt_s
-i32.eqz
-br_if $8
-local.get $x2
-local.set $x4
-block $10
-loop $11
-local.get $x1
-local.get $x2
-i32.add
-i32.load8_u
-i32.const 44
-i32.ne
-i32.eqz
-br_if $10
-local.get $x2
-i32.const 1
-i32.add
-local.set $x2
-br $11
-end
-end
-local.get $x2
 local.set $x5
 local.get $x2
 i32.const 1
@@ -167,8 +170,8 @@ i32.add
 local.set $x2
 i32.const 0
 local.set $x6
-block $12
-loop $13
+block $2
+loop $3
 local.get $x1
 local.get $x2
 i32.add
@@ -176,7 +179,7 @@ i32.load8_u
 i32.const 44
 i32.ne
 i32.eqz
-br_if $12
+br_if $2
 local.get $x6
 i32.const 10
 i32.mul
@@ -192,7 +195,7 @@ local.get $x2
 i32.const 1
 i32.add
 local.set $x2
-br $13
+br $3
 end
 end
 local.get $x2
@@ -201,8 +204,8 @@ i32.add
 local.set $x7
 local.get $x7
 local.set $x2
-block $14
-loop $15
+block $2
+loop $3
 local.get $x1
 local.get $x2
 i32.add
@@ -210,12 +213,12 @@ i32.load8_u
 i32.const 10
 i32.ne
 i32.eqz
-br_if $14
+br_if $2
 local.get $x2
 i32.const 1
 i32.add
 local.set $x2
-br $15
+br $3
 end
 end
 local.get $x2
@@ -224,40 +227,44 @@ local.get $x2
 i32.const 1
 i32.add
 local.set $x2
-;; unchecked: x76 = (unchecked[ ][ ](i32.add) x3 x61)
 local.get $x1
 local.get $x4
 i32.add
-;; unchecked end: x76 = (unchecked[ ][ ](i32.add) x3 x61)
 local.get $x5
 local.get $x4
 i32.sub
 call $printData
-i32.const 59
-call $printString
+i32.const 80
+call $printf0
+i32.const 88
+i32.const 4
+i32.const 0
 local.get $x6
-call $printInt
-i32.const 59
-call $printString
-;; unchecked: x113 = (unchecked[ ][ ](i32.add) x3 x96)
+i32.store
+call $printf1
+i32.const 80
+call $printf0
 local.get $x1
 local.get $x7
 i32.add
-;; unchecked end: x113 = (unchecked[ ][ ](i32.add) x3 x96)
 local.get $x8
 local.get $x7
 i32.sub
 call $printData
-i32.const 65
-call $printlnString
-br $9
+i32.const 3
+i32.const 0
+i32.const 96
+i32.store8
+call $println1
+br $1
 end
 end
 )
 ;; *********** Data Section ***********
-(data (i32.const 0) "\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00")
-(data (i32.const 20) "Name,Value,Flag\00")
-(data (i32.const 40) "src/data/t.csv\00")
-(data (i32.const 59) ",\00")
-(data (i32.const 65) "\00")
+(data (i32.const 0) "\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00")
+(data (i32.const 32) "Name,Value,Flag\00")
+(data (i32.const 56) "src/data/t.csv\00")
+(data (i32.const 80) ",\00")
+(data (i32.const 88) "%d\00")
+(data (i32.const 96) "\00")
 )

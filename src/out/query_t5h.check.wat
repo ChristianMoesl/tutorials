@@ -1,11 +1,11 @@
 (module
 ;; *********** Import Section ***********
-(import "env" "printlnString" (func $printlnString (param i32)))
+(import "env" "println1" (func $println1 (param i32)))
 (import "env" "malloc" (func $malloc (param i32) (result i32)))
 (import "env" "readFile" (func $readFile (param i32) (result i32)))
 (import "env" "printData" (func $printData (param i32 i32)))
-(import "env" "printString" (func $printString (param i32)))
-(import "env" "printInt" (func $printInt (param i32)))
+(import "env" "printf0" (func $printf0 (param i32)))
+(import "env" "printf1" (func $printf1 (param i32 i32)))
 ;; *********** Memory Section ***********
 (memory (export "mem") 1)
 ;; *********** Code Section ***********
@@ -118,8 +118,11 @@ local.get $t1
 (local $x45 i32)
 (local $x46 i32)
 (local $x47 i32)
-i32.const 20
-call $printlnString
+i32.const 3
+i32.const 0
+i32.const 32
+i32.store8
+call $println1
 i32.const 256
 local.tee $t0
 i32.const 4
@@ -166,13 +169,13 @@ i32.add
 local.set $x4
 i32.const 0
 local.set $x5
-block $2
-loop $3
+block $0
+loop $1
 local.get $x5
 i32.const 256
 i32.ne
 i32.eqz
-br_if $2
+br_if $0
 local.get $x4
 local.get $x5
 i32.const 4
@@ -184,7 +187,7 @@ local.get $x5
 i32.const 1
 i32.add
 local.set $x5
-br $3
+br $1
 end
 end
 i32.const 65536
@@ -287,13 +290,13 @@ local.get $t19
 i32.const 4
 i32.add
 local.set $x13
-i32.const 45
+i32.const 64
 call $readFile
 local.set $x14
 i32.const 0
 local.set $x15
-block $4
-loop $5
+block $0
+loop $1
 local.get $x14
 local.get $x15
 i32.add
@@ -301,20 +304,20 @@ i32.load8_u
 i32.const 44
 i32.ne
 i32.eqz
-br_if $4
+br_if $0
 local.get $x15
 i32.const 1
 i32.add
 local.set $x15
-br $5
+br $1
 end
 end
 local.get $x15
 i32.const 1
 i32.add
 local.set $x15
-block $6
-loop $7
+block $0
+loop $1
 local.get $x14
 local.get $x15
 i32.add
@@ -322,20 +325,20 @@ i32.load8_u
 i32.const 44
 i32.ne
 i32.eqz
-br_if $6
+br_if $0
 local.get $x15
 i32.const 1
 i32.add
 local.set $x15
-br $7
+br $1
 end
 end
 local.get $x15
 i32.const 1
 i32.add
 local.set $x15
-block $8
-loop $9
+block $0
+loop $1
 local.get $x14
 local.get $x15
 i32.add
@@ -343,12 +346,12 @@ i32.load8_u
 i32.const 10
 i32.ne
 i32.eqz
-br_if $8
+br_if $0
 local.get $x15
 i32.const 1
 i32.add
 local.set $x15
-br $9
+br $1
 end
 end
 local.get $x15
@@ -360,17 +363,17 @@ i32.const 4
 i32.sub
 i32.load
 local.set $x16
-block $10
-loop $11
+block $0
+loop $1
 local.get $x15
 local.get $x16
 i32.lt_s
 i32.eqz
-br_if $10
+br_if $0
 local.get $x15
 local.set $x17
-block $12
-loop $13
+block $2
+loop $3
 local.get $x14
 local.get $x15
 i32.add
@@ -378,12 +381,12 @@ i32.load8_u
 i32.const 44
 i32.ne
 i32.eqz
-br_if $12
+br_if $2
 local.get $x15
 i32.const 1
 i32.add
 local.set $x15
-br $13
+br $3
 end
 end
 local.get $x15
@@ -394,16 +397,14 @@ local.get $x15
 i32.const 1
 i32.add
 local.set $x15
-;; unchecked: x102 = (unchecked[ ][ ](i32.add) x29 x87)
 local.get $x14
 local.get $x17
 i32.add
-;; unchecked end: x102 = (unchecked[ ][ ](i32.add) x29 x87)
 local.set $x19
 i32.const 0
 local.set $x20
-block $14
-loop $15
+block $2
+loop $3
 local.get $x14
 local.get $x15
 i32.add
@@ -411,7 +412,7 @@ i32.load8_u
 i32.const 44
 i32.ne
 i32.eqz
-br_if $14
+br_if $2
 local.get $x20
 i32.const 10
 i32.mul
@@ -427,7 +428,7 @@ local.get $x15
 i32.const 1
 i32.add
 local.set $x15
-br $15
+br $3
 end
 end
 local.get $x15
@@ -436,8 +437,8 @@ i32.add
 local.set $x21
 local.get $x21
 local.set $x15
-block $16
-loop $17
+block $2
+loop $3
 local.get $x14
 local.get $x15
 i32.add
@@ -445,12 +446,12 @@ i32.load8_u
 i32.const 10
 i32.ne
 i32.eqz
-br_if $16
+br_if $2
 local.get $x15
 i32.const 1
 i32.add
 local.set $x15
-br $17
+br $3
 end
 end
 local.get $x15
@@ -487,11 +488,9 @@ local.get $x23
 i32.const 4
 i32.mul
 i32.add
-;; unchecked: x139 = (unchecked[ ][ ](i32.add) x29 x122)
 local.get $x14
 local.get $x21
 i32.add
-;; unchecked end: x139 = (unchecked[ ][ ](i32.add) x29 x122)
 i32.store
 local.get $x10
 local.get $x23
@@ -517,8 +516,8 @@ local.set $x24
 ;; generated code for hash lookup
 local.get $x24
 local.set $x26
-block $18
-loop $19
+block $2
+loop $3
 local.get $x4
 local.get $x26
 i32.const 4
@@ -555,35 +554,31 @@ i32.load
 local.set $x29
 i32.const 0
 local.set $x30
-block $20
-loop $21
+block $4
+loop $5
 local.get $x30
 local.get $x28
 i32.lt_s
 if (result i32)
-;; unchecked: x171 = (unchecked[ ][ ](i32.add)(i32.load8_u) x170 x161)
 local.get $x30
 local.get $x29
 i32.add
 i32.load8_u
-;; unchecked end: x171 = (unchecked[ ][ ](i32.add)(i32.load8_u) x170 x161)
-;; unchecked: x173 = (unchecked[ ][ ](i32.add)(i32.load8_u) x172 x102)
 local.get $x30
 local.get $x19
 i32.add
 i32.load8_u
-;; unchecked end: x173 = (unchecked[ ][ ](i32.add)(i32.load8_u) x172 x102)
 i32.eq
 else
 i32.const 0
 end
 i32.eqz
-br_if $20
+br_if $4
 local.get $x30
 i32.const 1
 i32.add
 local.set $x30
-br $21
+br $5
 end
 end
 local.get $x30
@@ -597,14 +592,14 @@ else
 i32.const 0
 end
 i32.eqz
-br_if $18
+br_if $2
 local.get $x26
 i32.const 1
 i32.add
 i32.const 255
 i32.and
 local.set $x26
-br $19
+br $3
 end
 end
 local.get $x4
@@ -688,13 +683,13 @@ local.get $x32
 i32.const 1
 i32.add
 i32.store
-br $11
+br $1
 end
 end
 i32.const 0
 local.set $x33
-block $22
-loop $23
+block $0
+loop $1
 local.get $x14
 local.get $x33
 i32.add
@@ -702,20 +697,20 @@ i32.load8_u
 i32.const 44
 i32.ne
 i32.eqz
-br_if $22
+br_if $0
 local.get $x33
 i32.const 1
 i32.add
 local.set $x33
-br $23
+br $1
 end
 end
 local.get $x33
 i32.const 1
 i32.add
 local.set $x33
-block $24
-loop $25
+block $0
+loop $1
 local.get $x14
 local.get $x33
 i32.add
@@ -723,20 +718,20 @@ i32.load8_u
 i32.const 44
 i32.ne
 i32.eqz
-br_if $24
+br_if $0
 local.get $x33
 i32.const 1
 i32.add
 local.set $x33
-br $25
+br $1
 end
 end
 local.get $x33
 i32.const 1
 i32.add
 local.set $x33
-block $26
-loop $27
+block $0
+loop $1
 local.get $x14
 local.get $x33
 i32.add
@@ -744,29 +739,29 @@ i32.load8_u
 i32.const 10
 i32.ne
 i32.eqz
-br_if $26
+br_if $0
 local.get $x33
 i32.const 1
 i32.add
 local.set $x33
-br $27
+br $1
 end
 end
 local.get $x33
 i32.const 1
 i32.add
 local.set $x33
-block $28
-loop $29
+block $0
+loop $1
 local.get $x33
 local.get $x16
 i32.lt_s
 i32.eqz
-br_if $28
+br_if $0
 local.get $x33
 local.set $x34
-block $30
-loop $31
+block $2
+loop $3
 local.get $x14
 local.get $x33
 i32.add
@@ -774,12 +769,12 @@ i32.load8_u
 i32.const 44
 i32.ne
 i32.eqz
-br_if $30
+br_if $2
 local.get $x33
 i32.const 1
 i32.add
 local.set $x33
-br $31
+br $3
 end
 end
 local.get $x33
@@ -790,14 +785,12 @@ local.get $x33
 i32.const 1
 i32.add
 local.set $x33
-;; unchecked: x290 = (unchecked[ ][ ](i32.add) x29 x275)
 local.get $x14
 local.get $x34
 i32.add
-;; unchecked end: x290 = (unchecked[ ][ ](i32.add) x29 x275)
 local.set $x36
-block $32
-loop $33
+block $2
+loop $3
 local.get $x14
 local.get $x33
 i32.add
@@ -805,20 +798,20 @@ i32.load8_u
 i32.const 44
 i32.ne
 i32.eqz
-br_if $32
+br_if $2
 local.get $x33
 i32.const 1
 i32.add
 local.set $x33
-br $33
+br $3
 end
 end
 local.get $x33
 i32.const 1
 i32.add
 local.set $x33
-block $34
-loop $35
+block $2
+loop $3
 local.get $x14
 local.get $x33
 i32.add
@@ -826,12 +819,12 @@ i32.load8_u
 i32.const 10
 i32.ne
 i32.eqz
-br_if $34
+br_if $2
 local.get $x33
 i32.const 1
 i32.add
 local.set $x33
-br $35
+br $3
 end
 end
 local.get $x33
@@ -849,8 +842,8 @@ local.set $x37
 ;; generated code for hash lookup
 local.get $x37
 local.set $x39
-block $36
-loop $37
+block $2
+loop $3
 local.get $x4
 local.get $x39
 i32.const 4
@@ -887,35 +880,31 @@ i32.load
 local.set $x42
 i32.const 0
 local.set $x43
-block $38
-loop $39
+block $4
+loop $5
 local.get $x43
 local.get $x41
 i32.lt_s
 if (result i32)
-;; unchecked: x350 = (unchecked[ ][ ](i32.add)(i32.load8_u) x349 x340)
 local.get $x43
 local.get $x42
 i32.add
 i32.load8_u
-;; unchecked end: x350 = (unchecked[ ][ ](i32.add)(i32.load8_u) x349 x340)
-;; unchecked: x352 = (unchecked[ ][ ](i32.add)(i32.load8_u) x351 x290)
 local.get $x43
 local.get $x36
 i32.add
 i32.load8_u
-;; unchecked end: x352 = (unchecked[ ][ ](i32.add)(i32.load8_u) x351 x290)
 i32.eq
 else
 i32.const 0
 end
 i32.eqz
-br_if $38
+br_if $4
 local.get $x43
 i32.const 1
 i32.add
 local.set $x43
-br $39
+br $5
 end
 end
 local.get $x43
@@ -929,14 +918,14 @@ else
 i32.const 0
 end
 i32.eqz
-br_if $36
+br_if $2
 local.get $x39
 i32.const 1
 i32.add
 i32.const 255
 i32.and
 local.set $x39
-br $37
+br $3
 end
 end
 local.get $x4
@@ -966,13 +955,13 @@ i32.add
 local.set $x45
 local.get $x44
 local.set $x46
-block $40
-loop $41
+block $2
+loop $3
 local.get $x46
 local.get $x45
 i32.ne
 i32.eqz
-br_if $40
+br_if $2
 local.get $x12
 local.get $x46
 i32.const 4
@@ -993,17 +982,21 @@ i32.mul
 i32.add
 i32.load
 call $printData
-i32.const 64
-call $printString
+i32.const 88
+call $printf0
+i32.const 96
+i32.const 4
+i32.const 0
 local.get $x8
 local.get $x47
 i32.const 4
 i32.mul
 i32.add
 i32.load
-call $printInt
-i32.const 64
-call $printString
+i32.store
+call $printf1
+i32.const 88
+call $printf0
 local.get $x9
 local.get $x47
 i32.const 4
@@ -1017,29 +1010,34 @@ i32.mul
 i32.add
 i32.load
 call $printData
-i32.const 64
-call $printString
+i32.const 88
+call $printf0
 local.get $x36
 local.get $x35
 call $printData
-i32.const 70
-call $printlnString
+i32.const 3
+i32.const 0
+i32.const 104
+i32.store8
+call $println1
 local.get $x46
 i32.const 1
 i32.add
 local.set $x46
-br $41
+br $3
 end
 end
+else
 end
-br $29
+br $1
 end
 end
 )
 ;; *********** Data Section ***********
-(data (i32.const 0) "\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00")
-(data (i32.const 20) "Name,Value,Flag,Name\00")
-(data (i32.const 45) "src/data/t.csv\00")
-(data (i32.const 64) ",\00")
-(data (i32.const 70) "\00")
+(data (i32.const 0) "\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00")
+(data (i32.const 32) "Name,Value,Flag,Name\00")
+(data (i32.const 64) "src/data/t.csv\00")
+(data (i32.const 88) ",\00")
+(data (i32.const 96) "%d\00")
+(data (i32.const 104) "\00")
 )
