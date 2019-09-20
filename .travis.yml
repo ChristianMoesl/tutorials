@@ -1,7 +1,7 @@
 stages:
   - test
   - name: deploy
-    if: branch = lms-wasm AND type = push
+    if: branch = wasmdb AND type = push
 jobs:
   include:
     - stage: test
