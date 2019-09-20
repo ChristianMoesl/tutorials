@@ -1,11 +1,10 @@
 (module
 ;; *********** Import Section ***********
-(import "env" "println1" (func $println1 (param i32)))
+(import "env" "println" (func $println (param i32)))
 (import "env" "malloc" (func $malloc (param i32) (result i32)))
 (import "env" "readFile" (func $readFile (param i32) (result i32)))
 (import "env" "printData" (func $printData (param i32 i32)))
-(import "env" "printf0" (func $printf0 (param i32)))
-(import "env" "printf1" (func $printf1 (param i32 i32)))
+(import "env" "printf" (func $printf (param i32 i32)))
 ;; *********** Memory Section ***********
 (memory (export "mem") 1)
 ;; *********** Code Section ***********
@@ -112,7 +111,7 @@ i32.const 3
 i32.const 0
 i32.const 32
 i32.store8
-call $println1
+call $println
 i32.const 0
 local.set $x1
 i32.const 256
@@ -683,7 +682,8 @@ i32.add
 i32.load
 call $printData
 i32.const 136
-call $printf0
+i32.const 0
+call $printf
 i32.const 144
 i32.const 4
 i32.const 0
@@ -694,24 +694,28 @@ i32.mul
 i32.add
 i32.load
 i32.store
-call $printf1
+call $printf
 i32.const 136
-call $printf0
+i32.const 0
+call $printf
 local.get $x35
 local.get $x34
 call $printData
 i32.const 136
-call $printf0
+i32.const 0
+call $printf
 local.get $x37
 local.get $x36
 call $printData
 i32.const 136
-call $printf0
+i32.const 0
+call $printf
 local.get $x39
 local.get $x38
 call $printData
 i32.const 136
-call $printf0
+i32.const 0
+call $printf
 local.get $x41
 local.get $x40
 call $printData
@@ -719,7 +723,7 @@ i32.const 3
 i32.const 0
 i32.const 152
 i32.store8
-call $println1
+call $println
 local.get $x44
 i32.const 1
 i32.add

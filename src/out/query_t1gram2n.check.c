@@ -39,7 +39,8 @@ void Snippet(char* x0) {
   printf("%s\n", "Word,Value,Word,Year,MatchCount,VolumeCount");
   int x1 = open("src/data/words.csv",0);
   int x2 = fsize(x1);
-  char* x3 = mmap(0, x2, PROT_READ, MAP_FILE | MAP_SHARED, x1, 0);
+  char* x3 = malloc(x2);
+  read(x1, x3, x2);
   int x4 = 0;
   while (x3[x4] != ',') x4 = x4 + 1;
   x4 = x4 + 1;
@@ -47,7 +48,7 @@ void Snippet(char* x0) {
   x4 = x4 + 1;
   int x5 = open("src/data/t1gram.csv",0);
   int x6 = fsize(x5);
-  char* x7 = mmap(0, x6, PROT_READ, MAP_FILE | MAP_SHARED, x5, 0);
+  char* x7 = malloc(x6);
   while (x4 < x2) {
     int x8 = x4;
     while (x3[x4] != ',') x4 = x4 + 1;
@@ -61,6 +62,7 @@ void Snippet(char* x0) {
     }
     x4 = x4 + 1;
     int x12 = x11;
+    read(x5, x7, x6);
     int x13 = 0;
     while (x13 < x6) {
       int x14 = x13;

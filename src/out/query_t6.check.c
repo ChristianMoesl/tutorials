@@ -49,7 +49,8 @@ void Snippet(char* x0) {
   int* x6 = (int*)malloc(256 * sizeof(int));
   int x7 = open("src/data/t.csv",0);
   int x8 = fsize(x7);
-  char* x9 = mmap(0, x8, PROT_READ, MAP_FILE | MAP_SHARED, x7, 0);
+  char* x9 = malloc(x8);
+  read(x7, x9, x8);
   int x10 = 0;
   while (x9[x10] != ',') x10 = x10 + 1;
   x10 = x10 + 1;

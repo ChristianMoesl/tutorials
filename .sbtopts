@@ -1,6 +1,6 @@
--J-Xms4G 
--J-Xmx4G 
--J-Xss4M 
+-J-Xms8G
+-J-Xmx8G
+-J-Xss8M
 -J-XX:MetaspaceSize=1G
 -J-XX:MaxMetaspaceSize=2G
 -J-XX:+UseParallelGC

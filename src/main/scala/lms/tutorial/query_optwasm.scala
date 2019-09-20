@@ -4,8 +4,6 @@ import lms.core.stub._
 import lms.macros.SourceContext
 import lms.core.virtualize
 
-//import scala.collection.mutable.IndexedSeqView
-
 @virtualize
 object query_optwasm {
   trait QueryCompiler extends Dsl with StagedQueryProcessor with WasmScannerBase {
@@ -53,7 +51,6 @@ object query_optwasm {
     }
     case class RString(str: Rep[StringPointer], len: Rep[Int]) extends RField {
       def print() = printData(str, len)
-//      def printLen() = write(0, data)// printf("%.*s", len, data.length)
       def compare(o: RField) = o match { case RString(str2, len2) => if (len == len2) {
         // TODO: we may or may not want to inline this (code bloat and icache considerations).
         var i = 0

@@ -1,10 +1,9 @@
 (module
 ;; *********** Import Section ***********
-(import "env" "println1" (func $println1 (param i32)))
+(import "env" "println" (func $println (param i32)))
 (import "env" "readFile" (func $readFile (param i32) (result i32)))
 (import "env" "printData" (func $printData (param i32 i32)))
-(import "env" "printf0" (func $printf0 (param i32)))
-(import "env" "printf1" (func $printf1 (param i32 i32)))
+(import "env" "printf" (func $printf (param i32 i32)))
 ;; *********** Memory Section ***********
 (memory (export "mem") 1)
 ;; *********** Code Section ***********
@@ -75,7 +74,7 @@ i32.const 3
 i32.const 0
 i32.const 32
 i32.store8
-call $println1
+call $println
 i32.const 80
 call $readFile
 local.set $x1
@@ -369,22 +368,25 @@ local.get $x8
 local.get $x7
 call $printData
 i32.const 128
-call $printf0
+i32.const 0
+call $printf
 i32.const 136
 i32.const 4
 i32.const 0
 local.get $x10
 i32.store
-call $printf1
+call $printf
 i32.const 128
-call $printf0
+i32.const 0
+call $printf
 local.get $x4
 local.get $x12
 i32.add
 local.get $x13
 call $printData
 i32.const 128
-call $printf0
+i32.const 0
+call $printf
 local.get $x4
 local.get $x14
 i32.add
@@ -393,7 +395,8 @@ local.get $x14
 i32.sub
 call $printData
 i32.const 128
-call $printf0
+i32.const 0
+call $printf
 local.get $x4
 local.get $x16
 i32.add
@@ -402,7 +405,8 @@ local.get $x16
 i32.sub
 call $printData
 i32.const 128
-call $printf0
+i32.const 0
+call $printf
 local.get $x4
 local.get $x18
 i32.add
@@ -414,7 +418,7 @@ i32.const 3
 i32.const 0
 i32.const 144
 i32.store8
-call $println1
+call $println
 else
 end
 br $3

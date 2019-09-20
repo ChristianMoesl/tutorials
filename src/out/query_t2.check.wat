@@ -1,6 +1,6 @@
 (module
 ;; *********** Import Section ***********
-(import "env" "println1" (func $println1 (param i32)))
+(import "env" "println" (func $println (param i32)))
 (import "env" "readFile" (func $readFile (param i32) (result i32)))
 (import "env" "printData" (func $printData (param i32 i32)))
 ;; *********** Memory Section ***********
@@ -57,7 +57,7 @@ i32.const 3
 i32.const 0
 i32.const 32
 i32.store8
-call $println1
+call $println
 i32.const 48
 call $readFile
 local.set $x1
@@ -216,7 +216,7 @@ i32.const 3
 i32.const 0
 i32.const 72
 i32.store8
-call $println1
+call $println
 br $1
 end
 end
