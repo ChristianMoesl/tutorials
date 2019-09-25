@@ -6,22 +6,22 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v1
-    
+
     - name: Build
       run: docker build -t christianmoesl/wasmdb-backend .
-    
+
     - name: Test
       run: docker run christianmoesl/wasmdb-backend sbt test
-      
+
     - name: Update DockerHub Image
       if: github.ref == 'refs/heads/wasmdb'
       run: |
         echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u christianmoesl --password-stdin
-        docker push christianmoesl/lms-wasm
-    
+        docker push christianmoesl/wasmdb-backend
+
     - name: Deploy assembly as AWS Lambda Function
       if: github.ref == 'refs/heads/wasmdb'
       run: |
