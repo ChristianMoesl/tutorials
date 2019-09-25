@@ -1,4 +1,4 @@
-name := "lms-tutorials"
+name := "wasmdb-backend"
 
 scalaVersion := "2.12.8"
 

@@ -1,0 +1,46 @@
+# get compiled assembly 
+FROM christianmoesl/wasmdb-backend as backend
+
+# build wasm tools for AWS lambda
+FROM amazonlinux:1 as wasm-tool-builder
+
+RUN yum -y groupinstall "Development Tools" \
+	&& yum -y install wget file clang \
+	&& yum -y remove cmake
+
+RUN wget https://cmake.org/files/v3.10/cmake-3.10.0.tar.gz \
+	&& tar -xvzf cmake-3.10.0.tar.gz \
+	&& cd cmake-3.10.0 \
+	&& export CC=gcc \
+	&& export CXX=g++ \
+	&& ./bootstrap \
+	&& make \
+	&& make install \
+	&& ln -s /usr/local/bin/cmake /usr/bin/cmake
+
+RUN git clone https://github.com/WebAssembly/wabt \
+	&& cd wabt \
+	&& make clang-release-no-tests \
+	&& mv /wabt/out/clang/Release/no-tests/wat2wasm /usr/bin/wat2wasm \
+	&& rm -rf /wabt /cmake-3.10.0
+	
+
+FROM ubuntu:latest
+
+RUN apt-get update && apt-get install -y python3 python3-pip zip groff
+
+RUN pip3 install awscli --upgrade --user
+
+COPY --from=backend /opt/wasmdb-backend/target/scala-2.12/wasmdb-backend-assembly-0.1.0-SNAPSHOT.jar /opt/wasmdb-backend/assembly.jar
+
+WORKDIR /opt/wasmdb-backend
+
+RUN unzip assembly.jar -d assembly && rm assembly.jar
+
+COPY --from=wasm-tool-builder /usr/bin/wat2wasm /opt/wasmdb-backend/assembly/wat2wasm
+
+RUN cd assembly && zip -r ../assembly.zip *
+#RUN zip assembly.zip /opt/wasmdb-backend/assembly
+
+CMD python3 -m awscli s3 cp assembly.zip s3://wasmdb/assembly.zip && python3 -m awscli lambda update-function-code --function-name wasmdb --s3-bucket wasmdb --s3-key assembly.zip 
+
