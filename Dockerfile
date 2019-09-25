@@ -2,14 +2,13 @@ FROM christianmoesl/lms-wasm
 
 RUN git clone https://github.com/TiarkRompf/lms-clean /opt/lms-clean
 
-# add tutorial sources to the image
-COPY . /opt/tutorials/
+# add sources to the image
+COPY . /opt/wasmdb-backend/
 
-WORKDIR /opt/tutorials
-VOLUME  /opt/tutorials
+WORKDIR /opt/wasmdb-backend
 
 # compile it
-RUN sbt compile
+RUN sbt assembly
 
 # default command
 CMD /bin/bash
