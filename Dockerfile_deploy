@@ -2,24 +2,26 @@
 FROM christianmoesl/wasmdb-backend as backend
 
 # build wasm tools for AWS lambda
-FROM amazonlinux:1 as wasm-tool-builder
+FROM amazonlinux:2 as wasm-tool-builder
 
 RUN yum -y groupinstall "Development Tools" \
 	&& yum -y install wget file clang \
 	&& yum -y remove cmake
 
-RUN wget https://cmake.org/files/v3.10/cmake-3.10.0.tar.gz \
-	&& tar -xvzf cmake-3.10.0.tar.gz \
-	&& cd cmake-3.10.0 \
+RUN wget https://cmake.org/files/v3.19/cmake-3.19.6.tar.gz \
+	&& tar -xvzf cmake-3.19.6.tar.gz \
+	&& cd cmake-3.19.6 \
 	&& export CC=gcc \
 	&& export CXX=g++ \
-	&& ./bootstrap \
+	&& ./bootstrap -- -DCMAKE_USE_OPENSSL=OFF \
 	&& make \
 	&& make install \
 	&& ln -s /usr/local/bin/cmake /usr/bin/cmake
 
 RUN git clone https://github.com/WebAssembly/wabt \
 	&& cd wabt \
+  && git checkout tags/1.0.21 \
+  && git submodule update --init \
 	&& make clang-release-no-tests \
 	&& mv /wabt/out/clang/Release/no-tests/wat2wasm /usr/bin/wat2wasm \
 	&& rm -rf /wabt /cmake-3.10.0
@@ -27,7 +29,9 @@ RUN git clone https://github.com/WebAssembly/wabt \
 
 FROM ubuntu:latest
 
-RUN apt-get update && apt-get install -y python3 python3-pip zip groff
+RUN DEBIAN_FRONTEND=noninteractive ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime \
+  && apt-get update  \
+  && apt-get install -yq python3 python3-pip zip groff
 
 RUN pip3 install awscli --upgrade --user
 

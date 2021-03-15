@@ -6,13 +6,10 @@ on:
   # trigger weekly at 12am
   # this build should run with caches disabled
   - cron: '0 0 * * 0'
-  workflow_dispatch:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v1
 
@@ -21,19 +18,3 @@ jobs:
 
     - name: Test
       run: docker run christianmoesl/wasmdb-backend sbt test
-
-    - name: Update DockerHub Image
-      if: github.ref == 'refs/heads/wasmdb'
-      run: |
-        echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u christianmoesl --password-stdin
-        docker push christianmoesl/wasmdb-backend
-
-    - name: Deploy assembly as AWS Lambda Function
-      if: github.ref == 'refs/heads/wasmdb'
-      run: |
-        docker build -t deploy -f Dockerfile_deploy .
-        docker run -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
-                   -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
-                   -e AWS_DEFAULT_REGION=${{ secrets.AWS_REGION }} deploy
-        echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u christianmoesl --password-stdin
-        docker push christianmoesl/wasmdb-backend:deploy-latest
