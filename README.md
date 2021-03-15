@@ -42,7 +42,7 @@ Uploads the program code as `.zip` file to `s3://wasmdb/assembly.zip` and update
    ```
  
 ## Project Parts:
-+ ![Lightweight Module Staging (LMS)](https://github.com/TiarkRompf/lms-clean) 
-+ ![WebAssembly DSL for LMS](https://github.com/ChristianMoesl/lms-wasm)
-+ ![SQL Query Compiler](https://github.com/ChristianMoesl/wasmdb-backend)
-+ ![Query Executor Web App](https://github.com/ChristianMoesl/wasmdb)
++ [Lightweight Module Staging (LMS)](https://github.com/TiarkRompf/lms-clean) 
++ [WebAssembly DSL for LMS](https://github.com/ChristianMoesl/lms-wasm)
++ [SQL Query Compiler](https://github.com/ChristianMoesl/wasmdb-backend)
++ [Query Executor Web App](https://github.com/ChristianMoesl/wasmdb)

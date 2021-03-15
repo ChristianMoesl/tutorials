@@ -1,6 +1,12 @@
 name: CI
 
-on: [push]
+on:
+  push:
+  schedule: 
+  # trigger weekly at 12am
+  # this build should run with caches disabled
+  - cron: '0 0 * * 0'
+  workflow_dispatch:
 
 jobs:
   build:
